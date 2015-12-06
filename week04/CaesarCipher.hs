@@ -15,4 +15,6 @@ shift n c
   | otherwise = c
 
 encode :: Int -> String -> String
-encode n xs = [shift n x | x <- xs]
+-- This is equivalent
+-- encode n xs = [shift n x | x <- xs]
+encode n xs = xs >>= \x -> return $ shift n x
