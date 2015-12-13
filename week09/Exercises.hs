@@ -10,3 +10,4 @@ data Nat = Zero
          deriving Show
 
 natToInteger :: Nat -> Integer
+natToInteger _ = undefined
