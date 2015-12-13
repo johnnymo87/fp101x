@@ -27,3 +27,14 @@ natToInteger n = genericLength [c | c <- show n, c == 'S']
 integerToNat :: Integer -> Nat
 integerToNat 0 = Zero
 integerToNat n = Succ (integerToNat (n - 1))
+
+add :: Nat -> Nat -> Nat
+-- add Zero n = n
+-- add (Succ m) n = Succ (add n m)
+add m Zero = m
+add m (Succ n) = Succ (add n m)
+
+mult :: Nat -> Nat -> Nat
+mult m Zero = Zero
+mult m (Succ n) = add m (mult m n)
+
