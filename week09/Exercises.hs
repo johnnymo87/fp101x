@@ -10,4 +10,13 @@ data Nat = Zero
          deriving Show
 
 natToInteger :: Nat -> Integer
-natToInteger _ = undefined
+-- natToInteger Zero = 0
+-- natToInteger (Succ n)  = natToInteger n + 1
+
+-- has "cannot construct infinite type" errors if defined without head
+-- natToInteger = head . func
+--   where func Zero = [0]
+--         func (Succ n) = [sum [x | x <- (1 : func n)]]
+
+-- meta-programming?
+natToInteger n = genericLength [c | c <- show n, c == 'S']
