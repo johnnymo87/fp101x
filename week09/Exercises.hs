@@ -38,3 +38,50 @@ mult :: Nat -> Nat -> Nat
 mult m Zero = Zero
 mult m (Succ n) = add m (mult m n)
 
+data Tree = Leaf Integer
+          | Node Tree Integer Tree
+          -- deriving (Show, Eq)
+
+occurs :: Integer -> Tree -> Bool
+occurs m (Leaf n) = m == n
+occurs m (Node l n r)
+  -- -- sorted asc
+  -- | m == n = True
+  -- | m < n = occurs m l
+  -- | otherwise = occurs m r
+  -- -- sorted desc
+  -- | m == n = True
+  -- | m > n = occurs m l
+  -- | otherwise = occurs m r
+  = case compare m n of
+        -- sorted asc
+        LT -> occurs m l
+        EQ -> True
+        GT -> occurs m r
+        -- sorted desc
+        -- LT -> occurs m r
+        -- EQ -> True
+        -- GT -> occurs m l
+
+data Tree' = Leaf' Integer
+          | Node' Tree' Tree'
+          deriving (Show, Eq)
+
+leaves :: Tree' -> Integer
+leaves (Leaf' _) = 1
+leaves (Node' l r) = leaves l + leaves r
+
+balanced :: Tree' -> Bool
+balanced (Leaf' _) = True
+balanced (Node' l r)
+  = abs (leaves l - leaves r) <= 1 && balanced l && balanced r
+
+halve :: [a] -> ([a], [a])
+halve xs = splitAt (length xs `div` 2) xs
+
+balance :: [Integer] -> Tree'
+balance [x] = Leaf' x
+balance xs = Node' (balance ys) (balance zs)
+  where (ys, zs) = halve xs
+
+data Expr = Val Int | Add Expr Expr deriving (Show)
