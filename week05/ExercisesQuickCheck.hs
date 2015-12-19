@@ -28,6 +28,8 @@ prop_BangBang xs =
   forAll (choose (0, length xs-1)) $ \x ->
     not (null xs) ==> (!!) xs x == (!!) (xs :: [Int]) x
 
+prop_positive (Positive x) = (\a -> a > 0) x == True
+
 -- properties
 prop_RevRev xs = reverse (reverse xs) == xs
   where types = xs::[Int]
