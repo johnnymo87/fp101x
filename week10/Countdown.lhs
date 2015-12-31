@@ -42,7 +42,7 @@ Combinatorial functions
 
 > subs                          :: [a] -> [[a]]
 > subs []                       =  [[]]
-> subs (x:xs)                   =  yss ++ map (x:) yss
+> subs (x:xs)                   =  map (x:) yss ++ yss
 >                                  where yss = subs xs
 >
 > interleave                    :: a -> [a] -> [[a]]
@@ -54,7 +54,7 @@ Combinatorial functions
 > perms (x:xs)                  =  concat (map (interleave x) (perms xs))
 >
 > choices                       :: [a] -> [[a]]
-> choices                       =  undefined
+> choices                       = (concat . (map perms)) . subs
 
 Formalising the problem
 -----------------------
@@ -66,7 +66,12 @@ Brute force solution
 --------------------
 
 > split                         :: [a] -> [([a],[a])]
-> split                         =  undefined
+> split []                      =  []
+> split [_]                     =  []
+> split (x:xs)                  =  ([x], xs) : [(x:ls, rs) | (ls, rs) <- split xs]
+
+split xs                      =  map (\n -> splitAt n xs) [1..(length xs-1)]
+
 > 
 > exprs                         :: [Int] -> [Expr]
 > exprs []                      =  []
